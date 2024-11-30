@@ -4,14 +4,14 @@ using PeopleApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Konfiguracja po³¹czenia z baz¹ danych
+// configure connection to db
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Dodanie kontrolerów
+// add controllers
 builder.Services.AddControllers();
 
-// Konfiguracja Swaggera (dokumentacja API)
+// Swagger configuration
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -47,15 +47,15 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Konfiguracja JWT (jeœli u¿ywasz autoryzacji)
-var key = "SuperSecretKey12345SuperSecretKey12345!"; // Klucz u¿ywany do podpisywania JWT
+// configure JWT
+var key = "SuperSecretKey12345SuperSecretKey12345!"; 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
         {
-            ValidateIssuer = false, // Mo¿esz ustawiæ na true, jeœli chcesz weryfikowaæ Issuer
-            ValidateAudience = false, // Mo¿esz ustawiæ na true, jeœli chcesz weryfikowaæ Audience
+            ValidateIssuer = false, 
+            ValidateAudience = false, 
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(key))
@@ -64,24 +64,23 @@ builder.Services.AddAuthentication("Bearer")
 
 var app = builder.Build();
 
-// Swagger dostêpny tylko w trybie development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "People API v1");
-        c.RoutePrefix = string.Empty; // Swagger dostêpny pod g³ównym adresem
+        c.RoutePrefix = string.Empty; 
     });
 }
 
 app.UseHttpsRedirection();
 
-// Middleware do obs³ugi autoryzacji JWT
+// Middleware 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Mapowanie kontrolerów
+// controllers mapping
 app.MapControllers();
 
 app.Run();
