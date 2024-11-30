@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PeopleApi.Data;
+using PeopleApi.Dto;
 using PeopleApi.Models;
 
 namespace PeopleApi.Controllers
@@ -16,28 +16,47 @@ namespace PeopleApi.Controllers
             _context = context;
         }
 
-        // Pobierz wszystkich znajomych
+        // get all friends 
         [HttpGet]
-        [Authorize]
         public IActionResult GetFriends()
         {
-            var friends = _context.Friends.ToList();
+            var friends = _context.Friends
+                .Select(f => new FriendDto
+                {
+                    Id = f.Id,
+                    Name = f.Name,
+                    Email = f.Email
+                })
+                .ToList();
+
             return Ok(friends);
         }
 
-        // Dodaj nowego znajomego
+        // add new friend 
         [HttpPost]
-        [Authorize]
-        public IActionResult AddFriend([FromBody] Friend friend)
+        public IActionResult AddFriend([FromBody] CreateFriendDto createFriendDto)
         {
+            var friend = new Friend
+            {
+                Name = createFriendDto.Name,
+                Email = createFriendDto.Email
+            };
+
             _context.Friends.Add(friend);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(GetFriends), new { id = friend.Id }, friend);
+
+            var friendDto = new FriendDto
+            {
+                Id = friend.Id,
+                Name = friend.Name,
+                Email = friend.Email
+            };
+
+            return CreatedAtAction(nameof(GetFriends), new { id = friend.Id }, friendDto);
         }
 
-        // Usuń znajomego
+        // remove friend 
         [HttpDelete("{id}")]
-        [Authorize]
         public IActionResult DeleteFriend(int id)
         {
             var friend = _context.Friends.FirstOrDefault(f => f.Id == id);
