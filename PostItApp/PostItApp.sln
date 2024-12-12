@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityApi", "IdentityApi\IdentityApi.csproj", "{C76F0B46-F085-42E6-B06B-CB1A8A40FDFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityApi", "IdentityApi\IdentityApi.csproj", "{C76F0B46-F085-42E6-B06B-CB1A8A40FDFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleApi", "PeopleApi\PeopleApi.csproj", "{6D1DF182-AE9A-4E0E-9F24-D23F3DB896BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeopleApi", "PeopleApi\PeopleApi.csproj", "{6D1DF182-AE9A-4E0E-9F24-D23F3DB896BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostApi", "PostApi\PostApi.csproj", "{CA5543F6-1FAE-4010-BE8F-9C473C6C8EFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostApi", "PostApi\PostApi.csproj", "{CA5543F6-1FAE-4010-BE8F-9C473C6C8EFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorFrontend", "BlazorFrontend\BlazorFrontend.csproj", "{FF8D4629-88C1-4365-AD43-A266EE9DEAB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{CA5543F6-1FAE-4010-BE8F-9C473C6C8EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA5543F6-1FAE-4010-BE8F-9C473C6C8EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA5543F6-1FAE-4010-BE8F-9C473C6C8EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF8D4629-88C1-4365-AD43-A266EE9DEAB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF8D4629-88C1-4365-AD43-A266EE9DEAB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF8D4629-88C1-4365-AD43-A266EE9DEAB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF8D4629-88C1-4365-AD43-A266EE9DEAB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
