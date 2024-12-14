@@ -7,13 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Dodaj HttpClient dla API
-//builder.Services.AddHttpClient("IdentityApi", client =>
-//{
-//    client.BaseAddress = new Uri("https://localhost:5146");
-//});
+builder.Services.AddHttpClient("IdentityApi", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7052/");
+});
 builder.Services.AddHttpClient<PostService>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:5092");
+    client.BaseAddress = new Uri("https://localhost:7008/");
 });
 //builder.Services.AddHttpClient("PeopleApi", client =>
 //{
@@ -24,8 +24,8 @@ builder.Services.AddHttpClient<PostService>(client =>
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.AddScoped<PostService>();
-
+//builder.Services.AddScoped<PostService>();   DO USUNIECIA PRAWDOPODOBNIE 
+builder.Services.AddScoped<AuthService>();
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment()) 

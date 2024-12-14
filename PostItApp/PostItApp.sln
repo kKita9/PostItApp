@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeopleApi", "PeopleApi\Peop
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostApi", "PostApi\PostApi.csproj", "{CA5543F6-1FAE-4010-BE8F-9C473C6C8EFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorFrontend", "BlazorFrontend\BlazorFrontend.csproj", "{FF8D4629-88C1-4365-AD43-A266EE9DEAB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorFrontend", "BlazorFrontend\BlazorFrontend.csproj", "{FF8D4629-88C1-4365-AD43-A266EE9DEAB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +36,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA2DE8F6-8394-4080-8F39-153A4104C77F}
 	EndGlobalSection
 EndGlobal

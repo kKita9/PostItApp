@@ -44,6 +44,7 @@ namespace IdentityApi.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] RegisterUserDto dto)
         {
+            Console.WriteLine($"Login attempt: Username = {dto.Username}, Password = {dto.Password}");
             var user = _context.Users.FirstOrDefault(u =>
                 u.Username == dto.Username && u.Password == dto.Password);
 

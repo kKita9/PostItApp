@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -12,9 +13,14 @@ namespace BlazorFrontend.Services
         {
             _httpClient = httpClient;
         }
-
+        public void SetAuthorizationHeader(string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+        }
         public async Task<List<Post>> GetPostsAsync()
         {
+            Console.WriteLine($"BaseAddress: {_httpClient.BaseAddress}");
             return await _httpClient.GetFromJsonAsync<List<Post>>("api/Post");
         }
 
