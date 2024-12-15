@@ -1,4 +1,5 @@
 ﻿using BlazorFrontend.Models;
+using Serilog;
 
 namespace BlazorFrontend.Services
 {
@@ -29,22 +30,24 @@ namespace BlazorFrontend.Services
             }
 
             var authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
-            return authResponse?.AccessToken ?? throw new Exception("Token not found.");
+            return authResponse?.Token ?? throw new Exception("Token not found.");
         }
         public async Task<bool> LoginAsync(string username, string password)
         {
             try
             {
-                var loginRequest = new { Username = username, Password = password };
+                var loginRequest = new { username = username, password = password };
 
                 var response = await _httpClient.PostAsJsonAsync("api/Users/login", loginRequest);
 
                 // Dodaj debugowanie odpowiedzi
                 var responseContent = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Response: {responseContent}");
+                Log.Information($"Response Status Code: {response.StatusCode}");
+                Log.Information($"Response Body: {responseContent}");
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    Log.Error("Failed to authenticate.");
                     return false;
                 }
 
@@ -58,7 +61,7 @@ namespace BlazorFrontend.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Exception: {ex.Message}");
+                Log.Error($"Exception during token retrieval: {ex.Message}");
                 return false; // Logowanie nie powiodło się
             }
         }

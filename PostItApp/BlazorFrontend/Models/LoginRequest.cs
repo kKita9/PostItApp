@@ -1,4 +1,6 @@
-﻿namespace BlazorFrontend.Models
+﻿using System.Text.Json.Serialization;
+
+namespace BlazorFrontend.Models
 {
     public class LoginRequest
     {
@@ -8,7 +10,8 @@
 
     public class AuthResponse
     {
-        public string AccessToken { get; set; }
-        public int ExpiresIn { get; set; }
+        [JsonPropertyName("token")]
+        public string Token { get; set; }
+     
     }
 }

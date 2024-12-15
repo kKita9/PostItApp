@@ -2,7 +2,7 @@
 @using BlazorFrontend.Services
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
-
+@using Serilog;
 <h3>Login</h3>
 
 <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
@@ -34,6 +34,7 @@
         errorMessage = string.Empty;
 
         bool success = await AuthService.LoginAsync(loginModel.Username, loginModel.Password);
+        Log.Information($"Login model: {loginModel}, success: {success}");
 
         if (success)
         {
