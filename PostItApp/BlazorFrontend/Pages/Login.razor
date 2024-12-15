@@ -20,6 +20,10 @@
     <button type="submit">Login</button>
 </EditForm>
 
+<div>
+    <button @onclick="NavigateToRegister">Register</button>
+</div>
+
 @if (!string.IsNullOrEmpty(errorMessage))
 {
     <div style="color: red">@errorMessage</div>
@@ -50,5 +54,9 @@
     {
         public string Username { get; set; }
         public string Password { get; set; }
+    }
+    private void NavigateToRegister()
+    {
+        NavigationManager.NavigateTo("/register");
     }
 }

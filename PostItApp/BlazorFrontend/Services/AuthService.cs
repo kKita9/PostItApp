@@ -57,12 +57,36 @@ namespace BlazorFrontend.Services
                 // Ustawienie tokena (opcjonalne)
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-                return true; // Logowanie powiodło się
+                return true; 
             }
             catch (Exception ex)
             {
                 Log.Error($"Exception during token retrieval: {ex.Message}");
-                return false; // Logowanie nie powiodło się
+                return false; 
+            }
+        }
+        public async Task<bool> RegisterUserAsync(string username, string password)
+        {
+            try
+            {
+                var registerRequest = new { username = username, password = password };
+
+                var response = await _httpClient.PostAsJsonAsync("api/Users/register", registerRequest);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    Log.Error("Registration failed: {0}", response.ReasonPhrase);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Exception during registration: {0}", ex.Message);
+                return false;
             }
         }
     }
