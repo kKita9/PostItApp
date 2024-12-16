@@ -1,0 +1,33 @@
+﻿@page "/posts"
+@using BlazorFrontend.Services
+@using BlazorFrontend.Models
+@inject PostService PostService
+@inject AuthService AuthService
+
+<h1>Posts</h1>
+
+@if (posts == null)
+{
+    <p>Loading posts...</p>
+}
+else
+{
+    @foreach (var post in posts)
+    {
+        <div>
+            <h3>@post.Title</h3>
+            <p>@post.Content</p>
+            <p><em>Posted on @post.CreatedAt</em></p>
+        </div>
+    }
+    
+}
+
+@code {
+    private List<BlazorFrontend.Models.PostModel> posts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        posts = await PostService.GetPostsAsync();
+    }
+}

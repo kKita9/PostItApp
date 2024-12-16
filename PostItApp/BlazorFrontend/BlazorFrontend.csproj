@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="Serilog" Version="4.2.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageReference Include="System.Formats.Asn1" Version="9.0.0" />
@@ -16,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\IdentityApi\IdentityApi.csproj" />
     <ProjectReference Include="..\PeopleApi\PeopleApi.csproj" />
+    <ProjectReference Include="..\PostApi\PostApi.csproj" />
   </ItemGroup>
 
 

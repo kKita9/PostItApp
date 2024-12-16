@@ -1,8 +1,10 @@
+using Blazored.LocalStorage;
 using BlazorFrontend.Data;
 using BlazorFrontend.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Serilog;
+
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -20,10 +22,12 @@ builder.Services.AddHttpClient("IdentityApi", client =>
     client.BaseAddress = new Uri("https://localhost:7052/");
 
 });
-builder.Services.AddHttpClient<PostService>(client =>
+builder.Services.AddHttpClient("PostApi", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7008/");
+
 });
+
 //builder.Services.AddHttpClient("PeopleApi", client =>
 //{
 //    client.BaseAddress = new Uri("https://localhost:7051");
@@ -36,9 +40,17 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthService>(s =>
 {
     var clientFactory = s.GetRequiredService<IHttpClientFactory>();
-    return new AuthService(clientFactory.CreateClient("IdentityApi"));
+    var localStorage = s.GetRequiredService<ILocalStorageService>();
+    return new AuthService(clientFactory.CreateClient("IdentityApi"), localStorage);
+});
+builder.Services.AddScoped<PostService>(s =>
+{
+    var clientFactory = s.GetRequiredService<IHttpClientFactory>();
+    var localStorage = s.GetRequiredService<ILocalStorageService>();
+    return new PostService(clientFactory.CreateClient("PostApi"), localStorage);
 });
 
+builder.Services.AddBlazoredLocalStorage();
 
 var app = builder.Build();
 
@@ -49,12 +61,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
-
 app.Run(); 

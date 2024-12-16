@@ -1,39 +1,33 @@
 ﻿using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using BlazorFrontend.Models;
+using System.Net.Http.Headers;
+using Blazored.LocalStorage;
 
 namespace BlazorFrontend.Services
 {
     public class PostService
     {
         private readonly HttpClient _httpClient;
+        private readonly ILocalStorageService _localStorage;
 
-        public PostService(HttpClient httpClient)
+        public PostService(HttpClient httpClient, ILocalStorageService localStorage)
         {
             _httpClient = httpClient;
-        }
-        public void SetAuthorizationHeader(string token)
-        {
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
-        }
-        public async Task<List<Post>> GetPostsAsync()
-        {
-            Console.WriteLine($"BaseAddress: {_httpClient.BaseAddress}");
-            return await _httpClient.GetFromJsonAsync<List<Post>>("api/Post");
+            _localStorage = localStorage;
         }
 
-        public async Task CreatePostAsync(Post post)
+        public async Task<List<PostModel>> GetPostsAsync()
         {
-            await _httpClient.PostAsJsonAsync("api/Post", post);
+            var token = await _localStorage.GetItemAsync<string>("authToken");
+            if (!string.IsNullOrEmpty(token))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+
+            return await _httpClient.GetFromJsonAsync<List<PostModel>>("api/Post");
         }
     }
-}
-public class Post
-{
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public string Content { get; set; }
-    public DateTime CreatedAt { get; set; }
 }
