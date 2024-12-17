@@ -62,3 +62,33 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    min-width: 50vw;
+}
+
+.login-box {
+    width: 500px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    text-align: center;
+}
+
+    .login-box h3 {
+        margin-bottom: 20px;
+    }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+button {
+    margin-right: 10px;
+}
