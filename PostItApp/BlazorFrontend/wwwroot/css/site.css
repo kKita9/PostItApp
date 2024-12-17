@@ -63,7 +63,7 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
-.login-container {
+.register-container, .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -71,7 +71,7 @@ a, .btn-link {
     min-width: 50vw;
 }
 
-.login-box {
+.register-box, .login-box {
     width: 500px;
     padding: 20px;
     border: 1px solid #ddd;
@@ -91,4 +91,8 @@ a, .btn-link {
 
 button {
     margin-right: 10px;
+}
+
+.alert {
+    margin-top: 15px;
 }
