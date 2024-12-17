@@ -3,27 +3,34 @@
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
 
-<h3>Register</h3>
+<div class="register-container">
+    <div class="register-box">
+        <h3>Register</h3>
 
-<EditForm Model="registerModel" OnValidSubmit="HandleRegister">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+        <EditForm Model="registerModel" OnValidSubmit="HandleRegister">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
 
-    <div>
-        <label>Username:</label>
-        <InputText @bind-Value="registerModel.Username" />
+            <div class="form-group">
+                <label>Username:</label>
+                <InputText @bind-Value="registerModel.Username" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <InputText @bind-Value="registerModel.Password" type="password" class="form-control" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Register</button>
+                <button type="button" class="btn btn-secondary" @onclick="NavigateToLogin">Back to Login</button>
+            </div>
+        </EditForm>
+
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger">@errorMessage</div>
+        }
     </div>
-    <div>
-        <label>Password:</label>
-        <InputText @bind-Value="registerModel.Password" type="password" />
-    </div>
-    <button type="submit">Register</button>
-</EditForm>
-
-@if (!string.IsNullOrEmpty(errorMessage))
-{
-    <div style="color: red">@errorMessage</div>
-}
+</div>
 
 @code {
     private RegisterModel registerModel = new RegisterModel();
@@ -40,6 +47,11 @@
         {
             errorMessage = "Registration failed. Please try again.";
         }
+    }
+
+    private void NavigateToLogin()
+    {
+        NavigationManager.NavigateTo("/login");
     }
 
     public class RegisterModel
