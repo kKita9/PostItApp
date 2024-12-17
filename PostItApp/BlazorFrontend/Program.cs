@@ -27,11 +27,10 @@ builder.Services.AddHttpClient("PostApi", client =>
     client.BaseAddress = new Uri("https://localhost:7008/");
 
 });
-
-//builder.Services.AddHttpClient("PeopleApi", client =>
-//{
-//    client.BaseAddress = new Uri("https://localhost:7051");
-//});
+builder.Services.AddHttpClient("PeopleApi", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7051/");
+});
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -48,6 +47,12 @@ builder.Services.AddScoped<PostService>(s =>
     var clientFactory = s.GetRequiredService<IHttpClientFactory>();
     var localStorage = s.GetRequiredService<ILocalStorageService>();
     return new PostService(clientFactory.CreateClient("PostApi"), localStorage);
+});
+builder.Services.AddScoped<FriendService>(s =>
+{
+    var clientFactory = s.GetRequiredService<IHttpClientFactory>();
+    var localStorage = s.GetRequiredService<ILocalStorageService>();
+    return new FriendService(clientFactory.CreateClient("PeopleApi"), localStorage);
 });
 
 builder.Services.AddBlazoredLocalStorage();
