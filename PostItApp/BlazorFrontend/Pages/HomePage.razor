@@ -1,0 +1,109 @@
+﻿@page "/home"
+@inject NavigationManager NavigationManager
+
+<div class="main-container">
+    <!-- Left panel -->
+    <div class="left-panel">
+        <h3>PostItApp</h3>
+        <ul>
+            <li><a href="#">Twój profil</a></li>
+            <li><a href="#">Posty</a></li>
+            <li><a href="#">Znajomi</a></li>
+        </ul>
+    </div>
+
+    <!-- Main panel -->
+    <div class="center-panel">
+        @foreach (var post in posts)
+        {
+            <div class="post">
+                <!-- Post header -->
+                <div class="post-header">
+                    <div class="user-img">jpg</div>
+                    <div>
+                        <strong>@post.UserName</strong><br />
+                        <small>@post.Date</small>
+                    </div>
+                </div>
+                <!-- Content -->
+                <div class="post-content">
+                    @post.Content
+                </div>
+                <!-- Likes and comments -->
+                <div class="post-actions">
+                    <div>
+                        <span>🖤 @post.Likes</span>
+                    </div>
+                    <div>
+                        <span>💬 @post.Comments.Count</span>
+                    </div>
+                </div>
+                <!-- Comment section -->
+                <div class="comments-section">
+                    <strong>Komentarze:</strong>
+                    <ul>
+                        @foreach (var comment in post.Comments)
+                        {
+                            <li class="comment-item">
+                                <strong>@comment.UserName</strong>: @comment.Content <br />
+                                <small>@comment.Date</small>
+                            </li>
+                        }
+                    </ul>
+                    <input type="text" placeholder="Dodaj komentarz..." class="comment-input" />
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Right panel -->
+    <div class="right-panel">
+        <h4>Znajomi</h4>
+        <ul>
+            <li>🟢 Znajomy</li>
+            <li>🟢 Znajomy</li>
+            <li>🟢 Znajomy</li>
+        </ul>
+    </div>
+</div>
+
+@code {
+    private List<Post> posts = new List<Post>
+    {
+        new Post
+        {
+            UserName = "Jan Kowalski",
+            Date = "12.12.2024",
+            Content = "Jakiś kontent posta",
+            Likes = 15,
+            Comments = new List<Comment>
+            {
+                new Comment { UserName = "Tadeusz Kracz", Content = "Jakiś komentarz..", Date = "13.12.2024 12:05" }
+            }
+        },
+        new Post
+        {
+            UserName = "Anna Nowak",
+            Date = "13.12.2024",
+            Content = "Kolejny świetny dzień!",
+            Likes = 20,
+            Comments = new List<Comment>()
+        }
+    };
+
+    private class Post
+    {
+        public string UserName { get; set; }
+        public string Date { get; set; }
+        public string Content { get; set; }
+        public int Likes { get; set; }
+        public List<Comment> Comments { get; set; }
+    }
+
+    private class Comment
+    {
+        public string UserName { get; set; }
+        public string Content { get; set; }
+        public string Date { get; set; }
+    }
+}
