@@ -1,19 +1,31 @@
-﻿@inherits LayoutComponentBase
+﻿@using BlazorFrontend.Services
+@inherits LayoutComponentBase
+@inject AuthState AuthState
 
-<PageTitle>BlazorFrontend</PageTitle>
-
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+<header class="app-header">
+    <div class="header-content">
+        <h1 class="app-title" style="@(AuthState.IsLoggedIn ? "" : "margin: auto;")">PostItApp</h1>
+        @if (AuthState.IsLoggedIn)
+        {
+            <nav class="top-menu">
+                <a href="/" class="menu-link">Home</a>
+                <a href="/posts" class="menu-link">Posts</a>
+                <a href="/logout" class="menu-link" @onclick="LogOut">Logout</a>
+            </nav>
+        }
     </div>
+</header>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+<div class="main-layout">
+    <div class="container">
+        @Body
+    </div>
 </div>
+
+@code {
+    private void LogOut()
+    {
+        AuthState.LogOut();
+        StateHasChanged();
+    }
+}

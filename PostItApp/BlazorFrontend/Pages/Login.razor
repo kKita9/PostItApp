@@ -1,8 +1,11 @@
 ﻿@page "/login"
+
 @using BlazorFrontend.Services
+@using Serilog;
+
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
-@using Serilog;
+@inject AuthState AuthState
 
 <div class="login-container">
     <div class="login-box">
@@ -46,6 +49,7 @@
 
         if (success)
         {
+            AuthState.LogIn();
             NavigationManager.NavigateTo("/posts");
         }
         else

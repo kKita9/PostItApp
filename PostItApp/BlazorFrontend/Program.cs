@@ -57,6 +57,8 @@ builder.Services.AddScoped<FriendService>(s =>
 
 builder.Services.AddBlazoredLocalStorage();
 
+builder.Services.AddScoped<AuthState>();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment()) 

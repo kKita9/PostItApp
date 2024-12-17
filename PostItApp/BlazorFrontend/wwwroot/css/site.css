@@ -96,3 +96,49 @@ button {
 .alert {
     margin-top: 15px;
 }
+
+/* Main header */
+.app-header {
+    background-color: #fff; 
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    padding: 10px 0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.app-title {
+    font-family: Arial, sans-serif;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #000; 
+    margin: 0;
+}
+
+.top-menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+    .menu-link:hover {
+        color: #555; 
+    }
+
+.container {
+    margin-top: 20px;
+    text-align: center;
+}
