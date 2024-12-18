@@ -59,10 +59,14 @@
     <!-- Right panel -->
     <div class="right-panel">
         <h4>Znajomi</h4>
-        <ul>
-            <li>🟢 Znajomy</li>
-            <li>🟢 Znajomy</li>
-            <li>🟢 Znajomy</li>
+        <ul class="friends-list">
+            @foreach (var friend in friends)
+            {
+                <li>
+                    <img src="https://placekitten.com/40/40" alt="Avatar" class="friend-img" />
+                    <span class="friend-name">@friend.Name</span>
+                </li>
+            }
         </ul>
     </div>
 </div>
@@ -91,6 +95,13 @@
         }
     };
 
+    private List<Friend> friends = new List<Friend>
+    {
+        new Friend { Name = "Jan Kowalski" },
+        new Friend { Name = "Anna Nowak" },
+        new Friend { Name = "Tomasz Wiśniewski" }
+    };
+
     private class Post
     {
         public string UserName { get; set; }
@@ -105,5 +116,10 @@
         public string UserName { get; set; }
         public string Content { get; set; }
         public string Date { get; set; }
+    }
+
+    private class Friend
+    {
+        public string Name { get; set; }
     }
 }

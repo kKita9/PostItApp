@@ -219,3 +219,40 @@ button {
     border: 1px solid #ddd;
     border-radius: 5px;
 }
+
+/*Right panel*/
+.right-panel {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+    .right-panel h4 {
+        margin-bottom: 10px;
+    }
+
+.friends-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .friends-list li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+.friend-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; 
+    margin-right: 10px;
+}
+
+.friend-name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+}
