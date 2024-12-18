@@ -256,3 +256,72 @@ button {
     font-weight: 500;
     color: #333;
 }
+
+/*Left panel*/
+.left-panel {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+}
+
+.profile-section {
+    margin-bottom: 20px;
+}
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.profile-bio {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.profile-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+    .profile-stats div {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .profile-stats strong {
+        color: #007bff;
+    }
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+}
+
+    .nav-menu li {
+        margin: 10px 0;
+    }
+
+    .nav-menu a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: 500;
+        display: block;
+        transition: color 0.3s ease;
+    }
+
+        .nav-menu a:hover {
+            color: #0056b3;
+        }

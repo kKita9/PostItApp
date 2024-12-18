@@ -2,14 +2,24 @@
 @inject NavigationManager NavigationManager
 
 <div class="main-container">
-    <!-- Left panel -->
+    <!--Left panel-->
     <div class="left-panel">
-        <h3>PostItApp</h3>
-        <ul>
-            <li><a href="#">Twój profil</a></li>
-            <li><a href="#">Posty</a></li>
-            <li><a href="#">Znajomi</a></li>
-        </ul>
+        <div class="profile-section">
+            <img src="images/default-avatar.jpg" alt="Avatar" class="profile-img" />
+            <h4>@userProfile.Name</h4>
+            <p class="profile-bio">@userProfile.Bio</p>
+            <div class="profile-stats">
+                <div>
+                    <strong>Posts:</strong> @userProfile.PostCount
+                </div>
+                <div>
+                    <strong>Reactions:</strong> @userProfile.ReactionCount
+                </div>
+                <div>
+                    <strong>Friends:</strong> @userProfile.FriendCount
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Main panel -->
@@ -102,6 +112,15 @@
         new Friend { Name = "Tomasz Wiśniewski" }
     };
 
+    private UserProfile userProfile = new UserProfile
+        {
+            Name = "Jan Kowalski",
+            PostCount = 12,
+            ReactionCount = 89,
+            FriendCount = 34,
+            Bio = "Witaj! Jestem miłośnikiem technologii i nowoczesnych rozwiązań."
+        };
+
     private class Post
     {
         public string UserName { get; set; }
@@ -121,5 +140,14 @@
     private class Friend
     {
         public string Name { get; set; }
+    }
+
+    private class UserProfile
+    {
+        public string Name { get; set; }
+        public int PostCount { get; set; }
+        public int ReactionCount { get; set; }
+        public int FriendCount { get; set; }
+        public string Bio { get; set; }
     }
 }
