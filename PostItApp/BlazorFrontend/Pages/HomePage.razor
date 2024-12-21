@@ -1,5 +1,13 @@
 ﻿@page "/home"
+
+@using BlazorFrontend.Services
+@using BlazorFrontend.Models
+
+@inject PostService PostService
+@inject AuthService AuthService
 @inject NavigationManager NavigationManager
+
+
 
 <div class="main-container">
     <!--Left panel-->
@@ -24,46 +32,55 @@
 
     <!-- Main panel -->
     <div class="center-panel">
-        @foreach (var post in posts)
+        @if (posts is null) 
         {
-            <div class="post">
-                <!-- Post header -->
-                <div class="post-header">
-                    <div class="user-img">jpg</div>
-                    <div>
-                        <strong>@post.UserName</strong><br />
-                        <small>@post.Date</small>
+            <p>Loading...</p>
+        }
+        else 
+        {
+            @foreach (var post in posts)
+            {
+                <div class="post">
+                    <!-- Post header -->
+                    <div class="post-header">
+                        <div class="user-img">jpg</div>
+                        <div>
+                            <strong>@post.UserName</strong><br />
+                            <small>@post.CreatedAt</small>
+                        </div>
                     </div>
-                </div>
-                <!-- Content -->
-                <div class="post-content">
-                    @post.Content
-                </div>
-                <!-- Likes and comments -->
-                <div class="post-actions">
-                    <div>
-                        <span>🖤 @post.Likes</span>
+                    <!-- Content -->
+                    <div class="post-content">
+                        @post.Content
                     </div>
-                    <div>
-                        <span>💬 @post.Comments.Count</span>
+                    <!-- Likes and comments -->
+                    <div class="post-actions">
+                        <div>
+                            <span>🖤 @post.Likes</span>
+                        </div>
+                        <div>
+                            <span>💬 @post.CommentsCount</span>
+                        </div>
                     </div>
-                </div>
-                <!-- Comment section -->
-                <div class="comments-section">
-                    <strong>Komentarze:</strong>
-                    <ul>
-                        @foreach (var comment in post.Comments)
+                    <!-- Comment section -->
+                    <div class="comments-section">
+                    <strong>komentarze:</strong>
+                   @*  <ul>
+                        @foreach (var comment in post.comments)
                         {
                             <li class="comment-item">
-                                <strong>@comment.UserName</strong>: @comment.Content <br />
-                                <small>@comment.Date</small>
+                                <strong>@comment.username</strong>: @comment.content <br />
+                                <small>@comment.date</small>
                             </li>
                         }
-                    </ul>
-                    <input type="text" placeholder="Dodaj komentarz..." class="comment-input" />
+                    </ul> *@
+                    <input type="text" placeholder="dodaj komentarz..." class="comment-input" />
                 </div>
-            </div>
+                </div>
+            }
         }
+
+        
     </div>
 
     <!-- Right panel -->
@@ -82,29 +99,28 @@
 </div>
 
 @code {
-    private List<Post> posts = new List<Post>
-    {
-        new Post
-        {
-            UserName = "Jan Kowalski",
-            Date = "12.12.2024",
-            Content = "Jakiś kontent posta",
-            Likes = 15,
-            Comments = new List<Comment>
-            {
-                new Comment { UserName = "Tadeusz Kracz", Content = "Jakiś komentarz..", Date = "13.12.2024 12:05" }
-            }
-        },
-        new Post
-        {
-            UserName = "Anna Nowak",
-            Date = "13.12.2024",
-            Content = "Kolejny świetny dzień!",
-            Likes = 20,
-            Comments = new List<Comment>()
-        }
-    };
+    private List<BlazorFrontend.Models.PostModel> posts;
 
+    protected override async Task OnInitializedAsync()
+    {
+        posts = await PostService.GetPostsAsync();
+
+        // todo remove later  
+        foreach (var post in posts)
+        {
+            post.Likes = new Random().Next(10, 100); 
+            post.CommentsCount = new Random().Next(0, 20);
+        }
+    }
+
+    // private List<BlazorFrontend.Models.PostModel> posts;
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     posts = await PostService.GetPostsAsync() ?? new List<PostModel>();
+    // }
+
+   
     private List<Friend> friends = new List<Friend>
     {
         new Friend { Name = "Jan Kowalski" },
