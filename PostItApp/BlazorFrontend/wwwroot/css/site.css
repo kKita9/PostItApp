@@ -97,6 +97,14 @@ button {
     margin-top: 15px;
 }
 
+
+.main-layout {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100%; 
+}
+
 /* Main header */
 .app-header {
     background-color: #fff; 
@@ -140,23 +148,53 @@ button {
 
 .container {
     margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
     text-align: center;
 }
 
 
+/* Navbar */
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    z-index: 10; 
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+}
+
 /*Home Page*/
 .main-container {
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-columns: 250px 1fr 250px; 
     gap: 20px;
-    padding: 20px;
+    padding: 50px 0px 0px; 
 }
 
-.left-panel, .right-panel {
+.left-panel {
+    position: sticky; 
+    top: 80px; 
+    height: calc(100vh - 100px); 
+    overflow-y: auto; 
     background-color: #f8f9fa;
     border: 1px solid #ddd;
     border-radius: 5px;
-    padding: 10px;
+    padding: 15px;
+}
+
+.right-panel {
+    position: sticky; 
+    top: 80px; 
+    height: calc(100vh - 100px); 
+    overflow-y: auto; 
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
 }
 
 .center-panel {
@@ -164,6 +202,8 @@ button {
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
+    overflow-y: auto; 
+    height: calc(100vh - 100px); 
 }
 
 .post {
@@ -325,3 +365,22 @@ button {
         .nav-menu a:hover {
             color: #0056b3;
         }
+
+/* Scrollbar */
+.center-panel::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.center-panel::-webkit-scrollbar-thumb {
+    background: #bbb; 
+    border-radius: 10px; 
+}
+
+    .center-panel::-webkit-scrollbar-thumb:hover {
+        background: #888; 
+    }
+
+.center-panel::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 10px; 
+}
