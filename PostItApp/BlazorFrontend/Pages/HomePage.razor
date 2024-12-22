@@ -44,7 +44,7 @@
                     <!-- Post header -->
                     <div class="post-header">
                         <div class="user-img">jpg</div>
-                        <div>
+                        <div class="post-info">
                             <strong>@post.UserName</strong><br />
                             <small>@post.CreatedAt</small>
                         </div>
@@ -53,34 +53,20 @@
                     <div class="post-content">
                         @post.Content
                     </div>
-                    <!-- Likes and comments -->
+                    <!-- Likes -->
                     <div class="post-actions">
                         <div>
                             <span>🖤 @post.Likes</span>
                         </div>
                         <div>
-                            <span>💬 @post.CommentsCount</span>
+                            <button class="like-button">
+                                <i class="fas fa-thumbs-up"></i> Like it
+                            </button>
                         </div>
                     </div>
-                    <!-- Comment section -->
-                    <div class="comments-section">
-                    <strong>komentarze:</strong>
-                   @*  <ul>
-                        @foreach (var comment in post.comments)
-                        {
-                            <li class="comment-item">
-                                <strong>@comment.username</strong>: @comment.content <br />
-                                <small>@comment.date</small>
-                            </li>
-                        }
-                    </ul> *@
-                    <input type="text" placeholder="dodaj komentarz..." class="comment-input" />
-                </div>
                 </div>
             }
         }
-
-        
     </div>
 
     <!-- Right panel -->
