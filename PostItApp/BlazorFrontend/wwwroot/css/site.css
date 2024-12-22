@@ -2,6 +2,9 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 h1:focus {
@@ -100,9 +103,9 @@ button {
 
 .main-layout {
     display: flex;
-    justify-content: center; 
-    align-items: center; 
-    height: 100%; 
+    justify-content: center;
+    /*align-items: center; */
+    height: 100%;
 }
 
 /* Main header */
@@ -172,12 +175,12 @@ button {
     display: grid;
     grid-template-columns: 250px 1fr 250px; 
     gap: 20px;
-    padding: 50px 0px 0px; 
+    padding: 50px 20px 20px;
 }
 
 .left-panel {
     position: sticky; 
-    top: 80px; 
+    top: 80px;
     height: calc(100vh - 100px); 
     overflow-y: auto; 
     background-color: #f8f9fa;
@@ -188,7 +191,7 @@ button {
 
 .right-panel {
     position: sticky; 
-    top: 80px; 
+    top: 80px;
     height: calc(100vh - 100px); 
     overflow-y: auto; 
     background-color: #f8f9fa;
