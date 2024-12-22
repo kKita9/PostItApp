@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using PeopleApi.Data;
-using PeopleApi.Models;
+using DataAccess.Data;
+using DataAccess.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,12 +97,12 @@ app.Run();
 
 // data seeder
 void SeedData(ApplicationDbContext context) { 
-    context.Friends.AddRange(new List<Friend>
-    {
-        new Friend { Name = "John Doe", Email = "john.doe@example.com" },
-        new Friend { Name = "Jane Smith", Email = "jane.smith@example.com" },
-        new Friend { Name = "Bob Johnson", Email = "bob.johnson@example.com" }
-    });
+    //context.Friends.AddRange(new List<Friend>
+    //{
+    //    new Friend { Name = "John Doe", Email = "john.doe@example.com" },
+    //    new Friend { Name = "Jane Smith", Email = "jane.smith@example.com" },
+    //    new Friend { Name = "Bob Johnson", Email = "bob.johnson@example.com" }
+    //});
 
-    context.SaveChanges();
+    //context.SaveChanges();
 }

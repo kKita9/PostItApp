@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PeopleApi.Data;
+﻿using DataAccess.Data;
+using DataAccess.Models;
+using Microsoft.AspNetCore.Mvc;
 using PeopleApi.Dto;
-using PeopleApi.Models;
 
 namespace PeopleApi.Controllers
 {

@@ -1,6 +1,6 @@
-﻿using IdentityApi.Data;
+﻿using DataAccess.Data;
+using DataAccess.Models;
 using IdentityApi.DTO;
-using IdentityApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;

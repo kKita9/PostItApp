@@ -1,5 +1,4 @@
-using IdentityApi.Data;
-using IdentityApi.Models;
+using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -97,14 +96,14 @@ app.Run();
 // Seed initial user data
 void SeedData(ApplicationDbContext context)
 {
-    if (!context.Users.Any())
-    {
-        context.Users.AddRange(new List<User>
-        {
-            new User { Username = "testuser1", Password = "password1" },
-            new User { Username = "testuser2", Password = "password2" }
-        });
+    //if (!context.Users.Any())
+    //{
+    //    context.Users.AddRange(new List<User>
+    //    {
+    //        new User { Username = "testuser1", Password = "password1" },
+    //        new User { Username = "testuser2", Password = "password2" }
+    //    });
 
-        context.SaveChanges();
-    }
+    //    context.SaveChanges();
+    //}
 }

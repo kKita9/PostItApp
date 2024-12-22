@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using PostApi.Data;
+using DataAccess.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
