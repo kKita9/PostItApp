@@ -1,87 +1,191 @@
-﻿//using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Mvc;
-//using PostApi.DTO;
-//using DataAccess.Models;
-//using DataAccess.Data;
+﻿using DataAccess.Data;
+using DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PostApi.DTO;
 
+[Route("api/[controller]")]
+[ApiController]
+public class PostController : ControllerBase
+{
+    private readonly ApplicationDbContext _context;
 
-//namespace PostApi.Controllers
-//{
-//    [Authorize] // Wymaga autoryzacji JWT
-//    [ApiController]
-//    [Route("api/[controller]")]
-//    public class PostController : ControllerBase
-//    {
-//        private readonly ApplicationDbContext _context;
+    public PostController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
 
-//        public PostController(ApplicationDbContext context)
-//        {
-//            _context = context;
-//        }
+    [HttpGet("user-posts")]
+    [Authorize]
+    public IActionResult GetUserPosts()
+    {
+        var userId = int.Parse(User.FindFirst("id").Value);
 
-//        // GET: api/Post
-//        [HttpGet]
-//        public IActionResult GetPosts()
-//        {
-//            var posts = _context.Posts.ToList();
-//            return Ok(posts);
-//        }
+        var posts = _context.Posts
+            .Where(p => p.UserId == userId)
+            .Select(p => new PostDto
+            {
+                Id = p.Id,
+                Content = p.Content,
+                CreatedAt = p.CreatedAt,
+                AuthorName = $"{p.User.FirstName} {p.User.LastName}",
+                LikeCount = p.Likes.Count
+            })
+            .ToList();
 
-//        // GET: api/Post/{id}
-//        [HttpGet("{id}")]
-//        public IActionResult GetPost(int id)
-//        {
-//            var post = _context.Posts.Find(id);
-//            if (post == null)
-//                return NotFound();
-//            return Ok(post);
-//        }
+        return Ok(posts);
+    }
 
-//        // POST: api/Post
-//        [HttpPost]
-//        public IActionResult CreatePost(CreatePostDto createPostDto)
-//        {
-//            // Tworzenie nowego obiektu Post na podstawie DTO
-//            var post = new Post
-//            {
-//                Title = createPostDto.Title,
-//                Content = createPostDto.Content,
-//                CreatedAt = DateTime.UtcNow
-//            };
+    [HttpGet("user-and-friends-posts")]
+    [Authorize]
+    public IActionResult GetUserAndFriendsPosts()
+    {
+        var userId = int.Parse(User.FindFirst("id").Value);
 
-//            // Dodawanie posta do bazy danych
-//            _context.Posts.Add(post);
-//            _context.SaveChanges();
+        var friendsIds = _context.Users
+            .Where(u => u.Id == userId)
+            .SelectMany(u => u.Friends.Select(f => f.Id))
+            .ToHashSet();
+        friendsIds.Add(userId);
 
-//            // Zwracanie stworzonego posta z automatycznie wygenerowanym Id
-//            return CreatedAtAction(nameof(GetPost), new { id = post.Id }, post);
-//        }
+        var posts = _context.Posts
+            .Where(p => friendsIds.Contains(p.UserId))
+            .Select(p => new PostDto
+            {
+                Id = p.Id,
+                Content = p.Content,
+                CreatedAt = p.CreatedAt,
+                AuthorName = $"{p.User.FirstName} {p.User.LastName}",
+                LikeCount = p.Likes.Count
+            })
+            .ToList();
 
-//        // PUT: api/Post/{id}
-//        [HttpPut("{id}")]
-//        public IActionResult UpdatePost(int id, Post post)
-//        {
-//            var existingPost = _context.Posts.Find(id);
-//            if (existingPost == null)
-//                return NotFound();
+        return Ok(posts);
+    }
 
-//            existingPost.Title = post.Title;
-//            existingPost.Content = post.Content;
-//            _context.SaveChanges();
-//            return NoContent();
-//        }
+    [HttpGet("post-count")]
+    [Authorize]
+    public IActionResult GetPostCount()
+    {
+        var userId = int.Parse(User.FindFirst("id").Value);
 
-//        // DELETE: api/Post/{id}
-//        [HttpDelete("{id}")]
-//        public IActionResult DeletePost(int id)
-//        {
-//            var post = _context.Posts.Find(id);
-//            if (post == null)
-//                return NotFound();
+        var postCount = _context.Posts.Count(p => p.UserId == userId);
 
-//            _context.Posts.Remove(post);
-//            _context.SaveChanges();
-//            return NoContent();
-//        }
-//    }
-//}
+        return Ok(postCount);
+    }
+
+    [HttpGet("{postId}/like-count")]
+    public IActionResult GetLikeCount(int postId)
+    {
+        var likeCount = _context.PostLikes.Count(l => l.PostId == postId);
+
+        return Ok(likeCount);
+    }
+
+    [HttpPost("like")]
+    [Authorize]
+    public IActionResult LikePost([FromBody] LikePostDto dto)
+    {
+        var userId = int.Parse(User.FindFirst("id").Value);
+
+        var post = _context.Posts.FirstOrDefault(p => p.Id == dto.PostId);
+        if (post == null)
+        {
+            return NotFound("Post not found.");
+        }
+
+        var alreadyLiked = _context.PostLikes.Any(l => l.PostId == dto.PostId && l.UserId == userId);
+        if (alreadyLiked)
+        {
+            return BadRequest("Post already liked.");
+        }
+
+        _context.PostLikes.Add(new PostLike
+        {
+            PostId = dto.PostId,
+            UserId = userId,
+            LikedAt = DateTime.UtcNow
+        });
+
+        _context.SaveChanges();
+
+        return Ok("Post liked successfully.");
+    }
+
+    [HttpGet("average-likes")]
+    [Authorize]
+    public IActionResult GetAverageLikes()
+    {
+        var userId = int.Parse(User.FindFirst("id").Value);
+
+        var userPosts = _context.Posts
+            .Where(p => p.UserId == userId)
+            .Include(p => p.Likes) 
+            .ToList();
+
+        var averageLikes = userPosts.Any()
+            ? userPosts.Average(p => p.Likes.Count)
+            : 0;
+
+        return Ok(new
+        {
+            PostCount = userPosts.Count,
+            AverageLikes = averageLikes
+        });
+    }
+
+    [HttpPost("add")]
+    [Authorize]
+    public IActionResult AddPost([FromBody] CreatePostDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(dto.Content))
+        {
+            return BadRequest("Content cannot be empty.");
+        }
+
+        var userId = int.Parse(User.FindFirst("id").Value);
+
+        var newPost = new Post
+        {
+            Content = dto.Content,
+            CreatedAt = DateTime.UtcNow,
+            UserId = userId
+        };
+
+        _context.Posts.Add(newPost);
+        _context.SaveChanges();
+
+        return Ok(new
+        {
+            Message = "Post created successfully.",
+            PostId = newPost.Id,
+            CreatedAt = newPost.CreatedAt
+        });
+    }
+
+    [HttpDelete("delete/{postId}")]
+    [Authorize]
+    public IActionResult DeletePost(int postId)
+    {
+        var userId = int.Parse(User.FindFirst("id").Value);
+        var post = _context.Posts.Include(p => p.Likes).FirstOrDefault(p => p.Id == postId);
+
+        if (post == null)
+        {
+            return NotFound("Post not found.");
+        }
+
+        if (post.UserId != userId)
+        {
+            return Forbid("You are not authorized to delete this post.");
+        }
+
+        _context.PostLikes.RemoveRange(post.Likes);
+
+        _context.Posts.Remove(post);
+        _context.SaveChanges();
+
+        return Ok(new { Message = "Post deleted successfully." });
+    }
+}
