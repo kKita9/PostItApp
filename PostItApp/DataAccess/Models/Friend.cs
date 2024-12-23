@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -9,12 +10,17 @@ namespace DataAccess.Models
 {
     public class Friend
     {
-        public int Id { get; set; }
+        public int Id { get; set; } 
 
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
+        [Required]
+        public int UserId { get; set; }
+        public User User { get; set; } 
 
-        [JsonPropertyName("email")]
-        public string Email { get; set; }
+        [Required]
+        public int FriendUserId { get; set; }
+        public User FriendUser { get; set; } 
+
+        public DateTime FriendshipStarted { get; set; } 
+
     }
 }
