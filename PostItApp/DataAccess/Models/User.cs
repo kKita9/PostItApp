@@ -9,7 +9,7 @@ namespace DataAccess.Models
 {
     public class User
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -17,19 +17,23 @@ namespace DataAccess.Models
 
         [Required]
         [MaxLength(50)]
-        public string LastName { get; set; } 
+        public string LastName { get; set; }
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; } 
+        public string Email { get; set; }
 
         [Required]
         [MinLength(6)]
-        public string Password { get; set; } 
-
-        public ICollection<Friend> Friends { get; set; }
+        public string Password { get; set; }
 
         public ICollection<Post> Posts { get; set; }
         public ICollection<PostLike> LikedPosts { get; set; }
+        public ICollection<User> Friends { get; set; }
+        public User()
+        {
+            Friends = new List<User>();
+        }
     }
+
 }

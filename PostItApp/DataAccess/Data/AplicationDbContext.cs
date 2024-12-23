@@ -10,44 +10,38 @@ namespace DataAccess.Data
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Friend> Friends { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // PostLike KEY
+            // PostLike
             modelBuilder.Entity<PostLike>()
                 .HasKey(pl => new { pl.UserId, pl.PostId });
 
-            // PostLike -> User
             modelBuilder.Entity<PostLike>()
                 .HasOne(pl => pl.User)
                 .WithMany(u => u.LikedPosts)
                 .HasForeignKey(pl => pl.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // PostLike -> Post
             modelBuilder.Entity<PostLike>()
                 .HasOne(pl => pl.Post)
                 .WithMany(p => p.Likes)
                 .HasForeignKey(pl => pl.PostId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Friend -> User
-            modelBuilder.Entity<Friend>()
-                .HasOne(f => f.User)
-                .WithMany(u => u.Friends)
-                .HasForeignKey(f => f.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Friend>()
-                .HasOne(f => f.FriendUser)
+            // Friends 
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Friends)
                 .WithMany()
-                .HasForeignKey(f => f.FriendUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserFriend",
+                    j => j.HasOne<User>().WithMany().HasForeignKey("FriendId"),
+                    j => j.HasOne<User>().WithMany().HasForeignKey("UserId")
+                );
 
-            // Post -> User
+            // Post -> User 
             modelBuilder.Entity<Post>()
                 .HasOne(p => p.User)
                 .WithMany(u => u.Posts)
@@ -57,5 +51,4 @@ namespace DataAccess.Data
             base.OnModelCreating(modelBuilder);
         }
     }
-
 }

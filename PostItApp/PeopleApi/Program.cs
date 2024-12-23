@@ -65,15 +65,6 @@ builder.Services.AddAuthentication("Bearer")
 
 var app = builder.Build();
 
-// seed data 
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-    context.Database.EnsureCreated();
-    SeedData(context);
-}
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -94,15 +85,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-// data seeder
-void SeedData(ApplicationDbContext context) { 
-    //context.Friends.AddRange(new List<Friend>
-    //{
-    //    new Friend { Name = "John Doe", Email = "john.doe@example.com" },
-    //    new Friend { Name = "Jane Smith", Email = "jane.smith@example.com" },
-    //    new Friend { Name = "Bob Johnson", Email = "bob.johnson@example.com" }
-    //});
-
-    //context.SaveChanges();
-}

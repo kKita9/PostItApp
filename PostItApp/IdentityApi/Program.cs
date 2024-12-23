@@ -76,7 +76,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    SeedData(context);
+    IdentityApi.DbInitializer.Seed(context);
 }
 
 if (app.Environment.IsDevelopment())
@@ -92,18 +92,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-// Seed initial user data
-void SeedData(ApplicationDbContext context)
-{
-    //if (!context.Users.Any())
-    //{
-    //    context.Users.AddRange(new List<User>
-    //    {
-    //        new User { Username = "testuser1", Password = "password1" },
-    //        new User { Username = "testuser2", Password = "password2" }
-    //    });
-
-    //    context.SaveChanges();
-    //}
-}

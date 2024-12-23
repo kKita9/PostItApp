@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241223092405_InitialMigration")]
+    [Migration("20241223194808_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -24,32 +24,6 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DataAccess.Models.Friend", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("FriendUserId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("FriendshipStarted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FriendUserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Friends");
-                });
 
             modelBuilder.Entity("DataAccess.Models.Post", b =>
                 {
@@ -126,23 +100,19 @@ namespace DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DataAccess.Models.Friend", b =>
+            modelBuilder.Entity("UserFriend", b =>
                 {
-                    b.HasOne("DataAccess.Models.User", "FriendUser")
-                        .WithMany()
-                        .HasForeignKey("FriendUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Property<int>("FriendId")
+                        .HasColumnType("int");
 
-                    b.HasOne("DataAccess.Models.User", "User")
-                        .WithMany("Friends")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Navigation("FriendUser");
+                    b.HasKey("FriendId", "UserId");
 
-                    b.Navigation("User");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFriend");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Post", b =>
@@ -175,6 +145,21 @@ namespace DataAccess.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("UserFriend", b =>
+                {
+                    b.HasOne("DataAccess.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("FriendId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DataAccess.Models.Post", b =>
                 {
                     b.Navigation("Likes");
@@ -182,8 +167,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Models.User", b =>
                 {
-                    b.Navigation("Friends");
-
                     b.Navigation("LikedPosts");
 
                     b.Navigation("Posts");
