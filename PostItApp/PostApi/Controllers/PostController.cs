@@ -199,9 +199,9 @@ public class PostController : ControllerBase
 
         return Ok(new
         {
-            Message = "Post created successfully.",
-            PostId = newPost.Id,
-            CreatedAt = newPost.CreatedAt
+            Content = newPost.Content,
+            CreatedAt = newPost.CreatedAt,
+            AuthorName = _context.Users.First(u => u.Id == userId).FirstName + " " + _context.Users.First(u => u.Id == userId).LastName
         });
     }
 

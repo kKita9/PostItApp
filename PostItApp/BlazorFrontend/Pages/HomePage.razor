@@ -107,6 +107,7 @@
 </div>
 
 @code {
+    // Posts 
     private List<BlazorFrontend.Models.PostModel> posts;
 
     protected override async Task OnInitializedAsync()
@@ -122,6 +123,7 @@
         }
     }
 
+    // Like post logic
     private async Task ToggleLike(PostModel post)
     {
         var response = await PostService.ToggleLikePostAsync(post.Id);
@@ -145,18 +147,33 @@
         }
     }
 
-
-
+    // New post content
     private string newPostContent = string.Empty;
 
     private async Task AddPost()
     {
-        if (!string.IsNullOrWhiteSpace(newPostContent))
+        if (string.IsNullOrWhiteSpace(newPostContent))
+            return;
+
+        var newPost = new PostModel
+            {
+                Content = newPostContent,
+                CreatedAt = DateTime.UtcNow,
+                UserName = "You"
+            };
+
+        var response = await PostService.AddPostAsync(newPost);
+
+        if (response.IsSuccessStatusCode)
         {
-            // TODO implemnt add post logic 
+            posts.Insert(0, newPost); 
+            newPostContent = string.Empty; 
+        }
+        else
+        {
+            Console.WriteLine("Failed to add post.");
         }
     }
-
 
    
     private List<Friend> friends = new List<Friend>
