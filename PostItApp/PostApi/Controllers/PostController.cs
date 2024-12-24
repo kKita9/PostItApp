@@ -117,6 +117,43 @@ public class PostController : ControllerBase
         return Ok("Post liked successfully.");
     }
 
+    [HttpPost("toggle-like/{postId}")]
+    [Authorize]
+    public IActionResult ToggleLike(int postId)
+    {
+        var userId = int.Parse(User.FindFirst("id").Value);
+
+        var post = _context.Posts
+            .Include(p => p.Likes)
+            .FirstOrDefault(p => p.Id == postId);
+
+        if (post == null)
+        {
+            return NotFound("Post not found.");
+        }
+
+        var like = post.Likes.FirstOrDefault(l => l.UserId == userId);
+
+        if (like != null)
+        {
+            _context.PostLikes.Remove(like);
+        }
+        else
+        {
+            _context.PostLikes.Add(new PostLike
+            {
+                PostId = postId,
+                UserId = userId,
+                LikedAt = DateTime.UtcNow
+            });
+        }
+
+        _context.SaveChanges();
+
+        return Ok(new { Success = true });
+    }
+
+
     [HttpGet("average-likes")]
     [Authorize]
     public IActionResult GetAverageLikes()

@@ -72,8 +72,16 @@
                                 </span>
                             </div>
                             <div>
-                                <button class="like-button">
-                                    <i class="fas fa-thumbs-up"></i> Like it
+                                <button class="like-button" @onclick="() => ToggleLike(post)">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    @if (post.IsLikedByCurrentUser)
+                                    {
+                                        <span>You liked it!</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Like it</span>
+                                    }
                                 </button>
                             </div>
                         </div>
@@ -109,11 +117,34 @@
         }
         catch (Exception ex)
         {
-            // Obsłuż błędy (np. brak tokenu lub problemy z połączeniem)
             Console.WriteLine($"Error fetching posts: {ex.Message}");
             posts = new List<PostModel>();
         }
     }
+
+    private async Task ToggleLike(PostModel post)
+    {
+        var response = await PostService.ToggleLikePostAsync(post.Id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            post.IsLikedByCurrentUser = !post.IsLikedByCurrentUser;
+
+            if (post.IsLikedByCurrentUser)
+            {
+                post.Likes += 1;
+            }
+            else
+            {
+                post.Likes -= 1;
+            }
+        }
+        else
+        {
+            Console.WriteLine("Failed to toggle like for the post.");
+        }
+    }
+
 
 
     private string newPostContent = string.Empty;

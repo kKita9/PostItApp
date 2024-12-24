@@ -29,6 +29,20 @@ namespace BlazorFrontend.Services
 
             return await _httpClient.GetFromJsonAsync<List<PostModel>>("api/Post/user-and-friends-posts");
         }
+
+        public async Task<HttpResponseMessage> ToggleLikePostAsync(int postId)
+        {
+            var token = await _localStorage.GetItemAsync<string>("authToken");
+            if (!string.IsNullOrEmpty(token))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+
+            return await _httpClient.PostAsync($"api/Post/toggle-like/{postId}", null);
+        }
+
+
+
     }
 
 }
