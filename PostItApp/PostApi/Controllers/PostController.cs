@@ -30,7 +30,7 @@ public class PostController : ControllerBase
                 Id = p.Id,
                 Content = p.Content,
                 CreatedAt = p.CreatedAt,
-                AuthorName = $"{p.User.FirstName} {p.User.LastName}",
+                AuthorName = "You",
                 LikeCount = p.Likes.Count,
                 IsLikedByCurrentUser = p.Likes.Any(l => l.UserId == userId)
             })
@@ -59,7 +59,7 @@ public class PostController : ControllerBase
                 Id = p.Id,
                 Content = p.Content,
                 CreatedAt = p.CreatedAt,
-                AuthorName = $"{p.User.FirstName} {p.User.LastName}",
+                AuthorName = p.UserId == userId ? "You" : p.User.FirstName + " " + p.User.LastName,
                 LikeCount = p.Likes.Count,
                 IsLikedByCurrentUser = p.Likes.Any(l => l.UserId == userId)
             })
