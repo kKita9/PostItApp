@@ -15,11 +15,11 @@ namespace BlazorFrontend.Services
             _localStorage = localStorage;
         }
 
-        public async Task<string> GetTokenAsync(string username, string password)
+        public async Task<string> GetTokenAsync(string email, string password)
         {
             var loginRequest = new LoginRequest
             {
-                Username = username,
+                Email = email,
                 Password = password
             };
 
@@ -36,10 +36,10 @@ namespace BlazorFrontend.Services
             return authResponse?.Token ?? throw new Exception("Token not found.");
         }
 
-        public async Task<bool> LoginAsync(string username, string password)
+        public async Task<bool> LoginAsync(string email, string password)
         {
             
-            var loginRequest = new { username = username, password = password };
+            var loginRequest = new { email = email, password = password };
 
             var response = await _httpClient.PostAsJsonAsync("api/Users/login", loginRequest);
 
