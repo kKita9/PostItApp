@@ -1,4 +1,4 @@
-﻿@page "/posts"
+﻿@* @page "/posts"
 @using BlazorFrontend.Services
 @using BlazorFrontend.Models
 @inject PostService PostService
@@ -30,4 +30,4 @@ else
     {
         posts = await PostService.GetPostsAsync();
     }
-}
+} *@

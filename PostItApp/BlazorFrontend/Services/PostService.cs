@@ -19,7 +19,7 @@ namespace BlazorFrontend.Services
             _localStorage = localStorage;
         }
 
-        public async Task<List<PostModel>> GetPostsAsync()
+        public async Task<List<PostModel>> GetUserAndFriendsPostsAsync()
         {
             var token = await _localStorage.GetItemAsync<string>("authToken");
             if (!string.IsNullOrEmpty(token))
@@ -27,7 +27,8 @@ namespace BlazorFrontend.Services
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
 
-            return await _httpClient.GetFromJsonAsync<List<PostModel>>("api/Post");
+            return await _httpClient.GetFromJsonAsync<List<PostModel>>("api/Post/user-and-friends-posts");
         }
     }
+
 }

@@ -7,5 +7,6 @@
         public DateTime CreatedAt { get; set; }
         public string AuthorName { get; set; }
         public int LikeCount { get; set; }
+        public bool IsLikedByCurrentUser { get; set; }
     }
 }

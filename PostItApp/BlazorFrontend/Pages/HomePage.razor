@@ -103,22 +103,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        posts = await PostService.GetPostsAsync();
-
-        // todo remove later  
-        foreach (var post in posts)
+        try
         {
-            post.Likes = new Random().Next(10, 100); 
-            post.CommentsCount = new Random().Next(0, 20);
+            posts = await PostService.GetUserAndFriendsPostsAsync();
+        }
+        catch (Exception ex)
+        {
+            // Obsłuż błędy (np. brak tokenu lub problemy z połączeniem)
+            Console.WriteLine($"Error fetching posts: {ex.Message}");
+            posts = new List<PostModel>();
         }
     }
 
-    // private List<BlazorFrontend.Models.PostModel> posts;
-
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     posts = await PostService.GetPostsAsync() ?? new List<PostModel>();
-    // }
 
     private string newPostContent = string.Empty;
 

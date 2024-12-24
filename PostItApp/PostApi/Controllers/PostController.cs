@@ -24,13 +24,15 @@ public class PostController : ControllerBase
 
         var posts = _context.Posts
             .Where(p => p.UserId == userId)
+            .OrderByDescending(p => p.CreatedAt)
             .Select(p => new PostDto
             {
                 Id = p.Id,
                 Content = p.Content,
                 CreatedAt = p.CreatedAt,
                 AuthorName = $"{p.User.FirstName} {p.User.LastName}",
-                LikeCount = p.Likes.Count
+                LikeCount = p.Likes.Count,
+                IsLikedByCurrentUser = p.Likes.Any(l => l.UserId == userId)
             })
             .ToList();
 
@@ -51,13 +53,15 @@ public class PostController : ControllerBase
 
         var posts = _context.Posts
             .Where(p => friendsIds.Contains(p.UserId))
+            .OrderByDescending(p => p.CreatedAt)
             .Select(p => new PostDto
             {
                 Id = p.Id,
                 Content = p.Content,
                 CreatedAt = p.CreatedAt,
                 AuthorName = $"{p.User.FirstName} {p.User.LastName}",
-                LikeCount = p.Likes.Count
+                LikeCount = p.Likes.Count,
+                IsLikedByCurrentUser = p.Likes.Any(l => l.UserId == userId)
             })
             .ToList();
 
