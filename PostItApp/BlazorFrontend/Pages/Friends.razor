@@ -17,14 +17,13 @@ else
     @foreach (var friend in friends)
     {
         <div>
-            <p>Name: @friend.Name</p>
-            <p>Email: @friend.Email</p>
+            <p>Name: @friend.FirstName</p>
         </div>
     }
 }
 
 @code {
-    private List<Friend> friends;
+    private List<Models.FriendModel> friends;
     private bool isLoaded = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

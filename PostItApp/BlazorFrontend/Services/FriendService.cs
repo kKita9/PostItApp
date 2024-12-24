@@ -1,10 +1,6 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using BlazorFrontend.Models;
+﻿using System.Net.Http.Json;
 using Blazored.LocalStorage;
-using System.Net.Http.Headers;
+using BlazorFrontend.Models;
 
 namespace BlazorFrontend.Services
 {
@@ -19,16 +15,17 @@ namespace BlazorFrontend.Services
             _localStorage = localStorage;
         }
 
-        public async Task<List<Friend>> GetFriendsAsync()
+        public async Task<List<FriendModel>> GetFriendsAsync()
         {
             var token = await _localStorage.GetItemAsync<string>("authToken");
-
             if (!string.IsNullOrEmpty(token))
             {
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             }
-             return await _httpClient.GetFromJsonAsync<List<Friend>>("api/Friends");
-            
+
+            return await _httpClient.GetFromJsonAsync<List<FriendModel>>("api/Friends/list")
+                   ?? new List<FriendModel>();
         }
     }
 }

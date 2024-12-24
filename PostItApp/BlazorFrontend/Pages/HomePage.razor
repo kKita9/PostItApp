@@ -5,7 +5,7 @@
 
 @inject PostService PostService
 @inject AuthService AuthService
-@* @inject UserProfileService UserProfileService *@
+@inject FriendService FriendService
 @inject NavigationManager NavigationManager
 
 
@@ -102,26 +102,35 @@
     <!-- Right panel -->
     <div class="right-panel">
         <h4>Friends</h4>
-        <ul class="friends-list">
-            @foreach (var friend in friends)
-            {
-                <li>
-                    <img src="images/default-avatar.jpg" alt="Avatar" class="friend-img" />
-                    <span class="friend-name">@friend.Name</span>
-                </li>
-            }
-        </ul>
+        @if (friends.Any())
+        {
+            <ul class="friends-list">
+                @foreach (var friend in friends)
+                {
+                    <li>
+                        <img src="images/default-avatar.jpg" alt="Avatar" class="friend-img" />
+                        <span class="friend-name">@friend.FirstName @friend.LastName</span>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No friends found.</p>
+        }
     </div>
 </div>
 
 @code {
     private UserProfileModel userProfile;
     private List<BlazorFrontend.Models.PostModel> posts;
+    private List<FriendModel> friends = new();
 
     protected override async Task OnInitializedAsync()
-    {
+        {
         await LoadUserProfileAsync();
         await LoadPostsAsync();
+        await LoadFriendsAsync();
     }
 
     private async Task LoadUserProfileAsync()
@@ -156,6 +165,20 @@
             posts = new List<PostModel>();
         }
     }
+
+    private async Task LoadFriendsAsync()
+    {
+        try
+        {
+            friends = await FriendService.GetFriendsAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading friends: {ex.Message}");
+            friends = new List<FriendModel>();
+        }
+    }
+
 
     // Like post logic
     private async Task ToggleLike(PostModel post)
@@ -207,18 +230,5 @@
         {
             Console.WriteLine("Failed to add post.");
         }
-    }
-
-   
-    private List<Friend> friends = new List<Friend>
-    {
-        new Friend { Name = "Jan Kowalski" },
-        new Friend { Name = "Anna Nowak" },
-        new Friend { Name = "Tomasz Wiśniewski" }
-    };
-
-    private class Friend
-    {
-        public string Name { get; set; }
     }
 }
