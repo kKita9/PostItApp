@@ -5,6 +5,7 @@
 
 @inject PostService PostService
 @inject AuthService AuthService
+@* @inject UserProfileService UserProfileService *@
 @inject NavigationManager NavigationManager
 
 
@@ -12,22 +13,29 @@
 <div class="main-container">
     <!--Left panel-->
     <div class="left-panel">
-        <div class="profile-section">
-            <img src="images/default-avatar.jpg" alt="Avatar" class="profile-img" />
-            <h4>@userProfile.Name</h4>
-            <p class="profile-bio">@userProfile.Bio</p>
-            <div class="profile-stats">
-                <div>
-                    <strong>Posts:</strong> @userProfile.PostCount
-                </div>
-                <div>
-                    <strong>Reactions:</strong> @userProfile.ReactionCount
-                </div>
-                <div>
-                    <strong>Friends:</strong> @userProfile.FriendCount
+        @if (userProfile == null)
+        {
+            <p>Loading user profile...</p>
+        }
+        else 
+        {
+            <div class="profile-section">
+                <img src="images/default-avatar.jpg" alt="Avatar" class="profile-img" />
+                <h4>@userProfile.Name</h4>
+                <p class="profile-bio">@userProfile.Bio</p>
+                <div class="profile-stats">
+                    <div>
+                        <strong>Posts:</strong> @userProfile.PostCount
+                    </div>
+                    <div>
+                        <strong>Average Likes:</strong> @userProfile.AverageLikes
+                    </div>
+                    <div>
+                        <strong>Friends:</strong> @userProfile.FriendCount
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 
     <!-- Main panel -->
@@ -107,10 +115,36 @@
 </div>
 
 @code {
-    // Posts 
+    private UserProfileModel userProfile;
     private List<BlazorFrontend.Models.PostModel> posts;
 
     protected override async Task OnInitializedAsync()
+    {
+        await LoadUserProfileAsync();
+        await LoadPostsAsync();
+    }
+
+    private async Task LoadUserProfileAsync()
+    {
+        try
+        {
+            userProfile = await AuthService.GetUserProfileAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading user profile: {ex.Message}");
+            userProfile = new UserProfileModel
+                {
+                    Name = "Unknown",
+                    Bio = "Error loading profile data.",
+                    FriendCount = 0,
+                    PostCount = 0,
+                    AverageLikes = 0
+                };
+        }
+    }
+
+    private async Task LoadPostsAsync()
     {
         try
         {
@@ -183,42 +217,8 @@
         new Friend { Name = "Tomasz Wiśniewski" }
     };
 
-    private UserProfile userProfile = new UserProfile
-        {
-            Name = "Jan Kowalski",
-            PostCount = 12,
-            ReactionCount = 89,
-            FriendCount = 34,
-            Bio = "Witaj! Jestem miłośnikiem technologii i nowoczesnych rozwiązań."
-        };
-
-    private class Post
-    {
-        public string UserName { get; set; }
-        public string Date { get; set; }
-        public string Content { get; set; }
-        public int Likes { get; set; }
-        public List<Comment> Comments { get; set; }
-    }
-
-    private class Comment
-    {
-        public string UserName { get; set; }
-        public string Content { get; set; }
-        public string Date { get; set; }
-    }
-
     private class Friend
     {
         public string Name { get; set; }
-    }
-
-    private class UserProfile
-    {
-        public string Name { get; set; }
-        public int PostCount { get; set; }
-        public int ReactionCount { get; set; }
-        public int FriendCount { get; set; }
-        public string Bio { get; set; }
     }
 }

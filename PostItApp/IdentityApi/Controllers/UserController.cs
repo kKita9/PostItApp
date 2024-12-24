@@ -3,6 +3,7 @@ using DataAccess.Models;
 using IdentityApi.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -118,6 +119,42 @@ namespace IdentityApi.Controllers
                 .ToList();
 
             return Ok(users);
+        }
+
+        [HttpGet("user-profile")]
+        [Authorize]
+        public IActionResult GetUserProfileWithStats()
+        {
+            var userId = int.Parse(User.FindFirst("id").Value);
+
+            var user = _context.Users
+                .Include(u => u.Friends)
+                .FirstOrDefault(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var postStats = _context.Posts
+                .Where(p => p.UserId == userId)
+                .Include(p => p.Likes)
+                .ToList();
+
+            var averageLikes = postStats.Any()
+                ? postStats.Average(p => p.Likes.Count)
+                : 0;
+
+            return Ok(new
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Name = $"{user.FirstName} {user.LastName}",
+                Bio = "Welcome to my profile!",  // hardcoded for now
+                FriendCount = user.Friends.Count,
+                PostCount = postStats.Count,
+                AverageLikes = averageLikes
+            });
         }
 
     }

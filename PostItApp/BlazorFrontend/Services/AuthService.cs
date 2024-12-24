@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using BlazorFrontend.Models;
 using Serilog;
+using System.Net.Http.Headers;
 
 namespace BlazorFrontend.Services
 {
@@ -84,6 +85,32 @@ namespace BlazorFrontend.Services
             {
                 Log.Error("Exception during registration: {0}", ex.Message);
                 return false;
+            }
+        }
+
+        public async Task<UserProfileModel> GetUserProfileAsync()
+        {
+            var token = await _localStorage.GetItemAsync<string>("authToken");
+            if (!string.IsNullOrEmpty(token))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+
+            try
+            {
+                var userProfile = await _httpClient.GetFromJsonAsync<UserProfileModel>("api/Users/user-profile");
+
+                if (userProfile == null)
+                {
+                    throw new Exception("Failed to fetch user profile.");
+                }
+
+                return userProfile;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching user profile: {ex.Message}");
+                throw;
             }
         }
     }
