@@ -1,5 +1,6 @@
 ﻿@page "/register"
 @using BlazorFrontend.Services
+@using BlazorFrontend.Models
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
 
@@ -12,8 +13,16 @@
             <ValidationSummary />
 
             <div class="form-group">
-                <label>Username:</label>
-                <InputText @bind-Value="registerModel.Username" class="form-control" />
+                <label>Firstname:</label>
+                <InputText @bind-Value="registerModel.FirstName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Lastname:</label>
+                <InputText @bind-Value="registerModel.LastName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <InputText @bind-Value="registerModel.Email" class="form-control" />
             </div>
             <div class="form-group">
                 <label>Password:</label>
@@ -38,7 +47,7 @@
 
     private async Task HandleRegister()
     {
-        var success = await AuthService.RegisterUserAsync(registerModel.Username, registerModel.Password);
+        var success = await AuthService.RegisterUserAsync(registerModel.Email, registerModel.FirstName, registerModel.LastName, registerModel.Password);
         if (success)
         {
             NavigationManager.NavigateTo("/login");
@@ -54,9 +63,9 @@
         NavigationManager.NavigateTo("/login");
     }
 
-    public class RegisterModel
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-    }
+    // public class RegisterModel
+    // {
+    //     public string Username { get; set; }
+    //     public string Password { get; set; }
+    // }
 }

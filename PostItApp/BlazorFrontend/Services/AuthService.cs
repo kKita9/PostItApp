@@ -56,11 +56,17 @@ namespace BlazorFrontend.Services
 
 
         }
-        public async Task<bool> RegisterUserAsync(string username, string password)
+        public async Task<bool> RegisterUserAsync(string email, string firstName, string lastName, string password)
         {
             try
             {
-                var registerRequest = new { username = username, password = password };
+                var registerRequest = new RegisterModel
+                {
+                    Email = email,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Password = password
+                };
 
                 var response = await _httpClient.PostAsJsonAsync("api/Users/register", registerRequest);
 
