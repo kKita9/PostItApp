@@ -153,7 +153,7 @@ namespace IdentityApi.Controllers
                 Bio = "Welcome to my profile!",  // hardcoded for now
                 FriendCount = user.Friends.Count,
                 PostCount = postStats.Count,
-                AverageLikes = averageLikes
+                AverageLikes = Math.Round(averageLikes)
             });
         }
 

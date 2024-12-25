@@ -333,8 +333,8 @@ button {
 }
 
 .profile-img {
-    width: 80px;
-    height: 80px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     border: 2px solid #ddd;
     margin-bottom: 10px;
@@ -404,6 +404,25 @@ button {
         margin-bottom: 10px;
     }
 
+    .right-panel::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .right-panel::-webkit-scrollbar-thumb {
+        background: #bbb;
+        border-radius: 10px;
+    }
+
+        .right-panel::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+
+    .right-panel::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+
 .friends-list {
     list-style: none;
     padding: 0;
@@ -413,10 +432,10 @@ button {
     .friends-list li {
         display: flex;
         align-items: center;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 
-.friend-img {
+.friend-img-panel {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -427,6 +446,7 @@ button {
     font-size: 1rem;
     font-weight: 500;
     color: #333;
+    justify-content: left;
 }
 
 /* Friends page */

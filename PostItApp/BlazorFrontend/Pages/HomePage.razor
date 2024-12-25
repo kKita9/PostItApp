@@ -60,7 +60,7 @@
                     <div class="post">
                         <!-- Post header -->
                         <div class="post-header">
-                            <div class="user-img">jpg</div>
+                            <img src="images/default-avatar.jpg" alt="Avatar" class="user-img" />
                             <div class="post-info">
                                 <strong>@post.UserName</strong><br />
                                 <small>@post.CreatedAt</small>
@@ -108,7 +108,7 @@
                 @foreach (var friend in friends)
                 {
                     <li>
-                        <img src="images/default-avatar.jpg" alt="Avatar" class="friend-img" />
+                        <img src="images/default-avatar.jpg" alt="Avatar" class="friend-img-panel" />
                         <span class="friend-name">@friend.FirstName @friend.LastName</span>
                     </li>
                 }
