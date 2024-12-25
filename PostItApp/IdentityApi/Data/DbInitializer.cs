@@ -30,7 +30,7 @@ namespace IdentityApi
                     new User { FirstName = "Rafał", LastName = "Zawadzki", Email = "rafal.zawadzki@example.com", Password = "password16" },
                     new User { FirstName = "Justyna", LastName = "Jastrzębska", Email = "justyna.jastrzebska@example.com", Password = "password17" },
                     new User { FirstName = "Karol", LastName = "Piotrowski", Email = "karol.piotrowski@example.com", Password = "password18" },
-                    new User { FirstName = "Magdalena", LastName = "Wojciechowska", Email = "magdalena.wojciechowska@example.com", Password = "password19" },
+                    new User { FirstName = "Magdalena", LastName = "Wojas", Email = "magdalena.wojas@example.com", Password = "password19" },
                     new User { FirstName = "Łukasz", LastName = "Więckowski", Email = "lukasz.wieckowski@example.com", Password = "password20" },
                 };
 
