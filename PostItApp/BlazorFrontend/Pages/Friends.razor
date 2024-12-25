@@ -1,38 +1,139 @@
 ﻿@page "/friends"
+
 @using BlazorFrontend.Services
+@using BlazorFrontend.Models
 
 @inject FriendService FriendService
+@inject NavigationManager NavigationManager
 
-<h1>Friends</h1>
-<NavLink class="nav-link" href="friends">
-    <span class="oi oi-list-rich" aria-hidden="true"></span> Friends
-</NavLink>
+<div class="main-container">
+    <div class="tabs">
+        <button @onclick="SetCurrentTab"
+                class="tab-button @(IsCurrentTabActive ? "active" : "")">
+            Current Friends
+        </button>
+        <button @onclick="SetPotentialTab"
+                class="tab-button @(IsPotentialTabActive ? "active" : "")">
+            Potential Friends
+        </button>
+    </div>
 
-@if (friends == null)
-{
-    <p>Loading friends...</p>
-}
-else
-{
-    @foreach (var friend in friends)
+    @if (ActiveTab == "current")
     {
-        <div>
-            <p>Name: @friend.FirstName</p>
+        <div class="friends-grid">
+            @if (currentFriends == null)
+            {
+                <p>Loading current friends...</p>
+            }
+            else if (!currentFriends.Any())
+            {
+                <p>You have no friends yet.</p>
+            }
+            else
+            {
+                @foreach (var friend in currentFriends)
+                {
+                    <div class="friend-card">
+                        <img src="images/default-avatar.jpg" alt="Avatar" class="friend-img" />
+                        <div class="friend-info">
+                            <h4>@friend.LastName</h4>
+                            <p>@friend.FirstName</p>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     }
-}
+    else if (ActiveTab == "potential")
+    {
+        <div class="friends-grid">
+            @if (potentialFriends == null)
+            {
+                <p>Loading potential friends...</p>
+            }
+            else if (!potentialFriends.Any())
+            {
+                <p>No potential friends available.</p>
+            }
+            else
+            {
+                @foreach (var friend in potentialFriends)
+                {
+                    <div class="friend-card">
+                        <img src="images/default-avatar.jpg" alt="Avatar" class="friend-img" />
+                        <div class="friend-info">
+                            <h4>@friend.LastName</h4>
+                            <p>@friend.FirstName</p>
+                            <button class="add-friend-button" @onclick="() => AddFriend(friend.Id)">Add Friend</button>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    }
+</div>
 
 @code {
-    private List<Models.FriendModel> friends;
-    private bool isLoaded = false;
+    private string ActiveTab = "current";
+    private List<FriendModel> currentFriends;
+    private List<FriendModel> potentialFriends;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private bool IsCurrentTabActive => ActiveTab == "current";
+    private bool IsPotentialTabActive => ActiveTab == "potential";
+
+    private void SetCurrentTab() => ActiveTab = "current";
+    private void SetPotentialTab() => ActiveTab = "potential";
+
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender && !isLoaded)
+        await LoadCurrentFriendsAsync();
+        await LoadPotentialFriendsAsync();
+    }
+
+    private async Task LoadCurrentFriendsAsync()
+    {
+        try
         {
-            friends = await FriendService.GetFriendsAsync();
-            isLoaded = true; // Zapobiega ponownemu ładowaniu przy każdym renderowaniu
-            StateHasChanged(); // Informuje Blazor, że należy ponownie wyrenderować komponent
+            currentFriends = await FriendService.GetFriendsAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading current friends: {ex.Message}");
+            currentFriends = new List<FriendModel>();
+        }
+    }
+
+    private async Task LoadPotentialFriendsAsync()
+    {
+        try
+        {
+            potentialFriends = await FriendService.GetPotentialFriendsAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading potential friends: {ex.Message}");
+            potentialFriends = new List<FriendModel>();
+        }
+    }
+
+    private async Task AddFriend(int friendId)
+    {
+        try
+        {
+            var success = await FriendService.AddFriendAsync(friendId);
+            if (success)
+            {
+                await LoadCurrentFriendsAsync();
+                await LoadPotentialFriendsAsync();
+            }
+            else
+            {
+                Console.WriteLine("Failed to add friend.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding friend: {ex.Message}");
         }
     }
 }
