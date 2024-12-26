@@ -16,20 +16,18 @@ Log.Information("Serilog is now handling logging!");
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Dodaj HttpClient dla API
+// HttpClient for API calls
 builder.Services.AddHttpClient("IdentityApi", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7052/");
-
+    client.BaseAddress = new Uri(builder.Configuration["ApiUrls:IdentityApi"]);
 });
 builder.Services.AddHttpClient("PostApi", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7008/");
-
+    client.BaseAddress = new Uri(builder.Configuration["ApiUrls:PostApi"]);
 });
 builder.Services.AddHttpClient("PeopleApi", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7051/");
+    client.BaseAddress = new Uri(builder.Configuration["ApiUrls:PeopleApi"]);
 });
 
 // Add services to the container.

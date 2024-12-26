@@ -29,7 +29,10 @@ builder.Services.AddAuthentication(options =>
 
 // Database configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"), 
+        sqlOptions => sqlOptions.EnableRetryOnFailure()
+        ));
 
 // Controllers and Swagger configuration
 builder.Services.AddControllers();
@@ -76,6 +79,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
     IdentityApi.DbInitializer.Seed(context);
 }
 
