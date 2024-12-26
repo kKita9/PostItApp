@@ -1,19 +1,16 @@
 version: '3.8'
 services:
   sqlserver:
-    image: mcr.microsoft.com/mssql/server
-    container_name: sqlserver
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sqlserver   
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Password_123#
     ports:
       - "1433:1433"
-    healthcheck:
-      test: ["CMD", "sqlcmd", "-U", "sa", "-P", "Password_123#", "-Q", "SELECT 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
+    
   identityapi:
     build:
       context: .

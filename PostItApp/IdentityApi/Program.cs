@@ -76,12 +76,12 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Seed initial data
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    context.Database.Migrate();
-    IdentityApi.DbInitializer.Seed(context);
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//    context.Database.Migrate();
+//    IdentityApi.DbInitializer.Seed(context);
+//}
 
 if (app.Environment.IsDevelopment())
 {
