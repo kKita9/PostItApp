@@ -4,7 +4,7 @@ USE PostItAppDb;
 GO
 
 CREATE TABLE Users (
-    Id INT PRIMARY KEY,
+    Id INT IDENTITY(1,1) PRIMARY KEY,
     FirstName NVARCHAR(50) NOT NULL,
     LastName NVARCHAR(50) NOT NULL,
     Email NVARCHAR(100) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE Posts (
-    Id INT PRIMARY KEY,
+    Id INT IDENTITY(1,1) PRIMARY KEY,
     Content NVARCHAR(255) NOT NULL,
     CreatedAt DATETIME NOT NULL,
     UserId INT NOT NULL,
@@ -36,30 +36,27 @@ CREATE TABLE UserFriend (
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION
 );
 
-
-
-INSERT INTO Users (Id, FirstName, LastName, Email, Password) VALUES
-(1, 'Jan', 'Kowalski', 'jan.kowalski@example.com', 'password1'),
-(2, 'Anna', 'Nowak', 'anna.nowak@example.com', 'password2'),
-(3, 'Tomasz', 'Wiśniewski', 'tomasz.wisniewski@example.com', 'password3'),
-(4, 'Maria', 'Kamińska', 'maria.kaminska@example.com', 'password4'),
-(5, 'Paweł', 'Zieliński', 'pawel.zielinski@example.com', 'password5'),
-(6, 'Agnieszka', 'Dąbrowska', 'agnieszka.dabrowska@example.com', 'password6'),
-(7, 'Katarzyna', 'Nowicka', 'katarzyna.nowicka@example.com', 'password7'),
-(8, 'Michał', 'Majewski', 'michal.majewski@example.com', 'password8'),
-(9, 'Barbara', 'Sikorska', 'barbara.sikorska@example.com', 'password9'),
-(10, 'Piotr', 'Jankowski', 'piotr.jankowski@example.com', 'password10'),
-(11, 'Ewa', 'Kaczmarek', 'ewa.kaczmarek@example.com', 'password11'),
-(12, 'Grzegorz', 'Sadowski', 'grzegorz.sadowski@example.com', 'password12'),
-(13, 'Joanna', 'Wróbel', 'joanna.wrobel@example.com', 'password13'),
-(14, 'Andrzej', 'Czerwiński', 'andrzej.czerwinski@example.com', 'password14'),
-(15, 'Monika', 'Ostrowska', 'monika.ostrowska@example.com', 'password15'),
-(16, 'Rafał', 'Zawadzki', 'rafal.zawadzki@example.com', 'password16'),
-(17, 'Justyna', 'Jastrzębska', 'justyna.jastrzebska@example.com', 'password17'),
-(18, 'Karol', 'Piotrowski', 'karol.piotrowski@example.com', 'password18'),
-(19, 'Magdalena', 'Wojas', 'magdalena.wojas@example.com', 'password19'),
-(20, 'Łukasz', 'Więckowski', 'lukasz.wieckowski@example.com', 'password20');
-
+INSERT INTO Users (FirstName, LastName, Email, Password) VALUES
+('Jan', 'Kowalski', 'jan.kowalski@example.com', 'password1'),
+('Anna', 'Nowak', 'anna.nowak@example.com', 'password2'),
+('Tomasz', 'Wiśniewski', 'tomasz.wisniewski@example.com', 'password3'),
+('Maria', 'Kamińska', 'maria.kaminska@example.com', 'password4'),
+('Paweł', 'Zieliński', 'pawel.zielinski@example.com', 'password5'),
+('Agnieszka', 'Dąbrowska', 'agnieszka.dabrowska@example.com', 'password6'),
+('Katarzyna', 'Nowicka', 'katarzyna.nowicka@example.com', 'password7'),
+('Michał', 'Majewski', 'michal.majewski@example.com', 'password8'),
+('Barbara', 'Sikorska', 'barbara.sikorska@example.com', 'password9'),
+('Piotr', 'Jankowski', 'piotr.jankowski@example.com', 'password10'),
+('Ewa', 'Kaczmarek', 'ewa.kaczmarek@example.com', 'password11'),
+('Grzegorz', 'Sadowski', 'grzegorz.sadowski@example.com', 'password12'),
+('Joanna', 'Wróbel', 'joanna.wrobel@example.com', 'password13'),
+('Andrzej', 'Czerwiński', 'andrzej.czerwinski@example.com', 'password14'),
+('Monika', 'Ostrowska', 'monika.ostrowska@example.com', 'password15'),
+('Rafał', 'Zawadzki', 'rafal.zawadzki@example.com', 'password16'),
+('Justyna', 'Jastrzębska', 'justyna.jastrzebska@example.com', 'password17'),
+('Karol', 'Piotrowski', 'karol.piotrowski@example.com', 'password18'),
+('Magdalena', 'Wojas', 'magdalena.wojas@example.com', 'password19'),
+('Łukasz', 'Więckowski', 'lukasz.wieckowski@example.com', 'password20');
 
 INSERT INTO UserFriend (FriendId, UserId) VALUES
 (9, 1), (19, 1),
@@ -83,19 +80,17 @@ INSERT INTO UserFriend (FriendId, UserId) VALUES
 (15, 19), (17, 19),
 (6, 20);
 
-
-INSERT INTO Posts (Id, Content, CreatedAt, UserId) VALUES
-(1, 'Hello world!', '2024-12-16 12:29:51', 1),
-(2, 'First post here!', '2024-12-17 12:29:51', 2),
-(3, 'Loving this app!', '2024-12-18 12:29:51', 3),
-(4, 'Such a beautiful day!', '2024-12-19 12:29:51', 4),
-(5, 'Anyone up for coffee?', '2024-12-20 12:29:51', 1),
-(6, 'Learning new things every day.', '2024-12-21 12:29:51', 2),
-(7, 'This app is awesome!', '2024-12-22 12:29:51', 3),
-(8, 'Weekend vibes!', '2024-12-23 12:29:51', 4),
-(9, 'Just finished a great book!', '2024-12-24 12:29:51', 1),
-(10, 'Excited for tomorrow''s event!', '2024-12-25 12:29:51', 2);
-
+INSERT INTO Posts (Content, CreatedAt, UserId) VALUES
+('Hello world!', '2024-12-16 12:29:51', 1),
+('First post here!', '2024-12-17 12:29:51', 2),
+('Loving this app!', '2024-12-18 12:29:51', 3),
+('Such a beautiful day!', '2024-12-19 12:29:51', 4),
+('Anyone up for coffee?', '2024-12-20 12:29:51', 1),
+('Learning new things every day.', '2024-12-21 12:29:51', 2),
+('This app is awesome!', '2024-12-22 12:29:51', 3),
+('Weekend vibes!', '2024-12-23 12:29:51', 4),
+('Just finished a great book!', '2024-12-24 12:29:51', 1),
+('Excited for tomorrow''s event!', '2024-12-25 12:29:51', 2);
 
 INSERT INTO PostLikes (UserId, PostId, LikedAt) VALUES
 (1, 1, '2024-12-26 03:21:51'),
