@@ -57,7 +57,7 @@ git clone https://github.com/kKita9/PostItApp.git
   ```
 3. Run the application with Docker Compose:
 ```bash
-docker-compose up
+docker-compose up --build
 ```
 4. Open a browser and go to [http://localhost:5000/login](http://localhost:5000/login)
 
