@@ -1,6 +1,0 @@
-tworzenie dockerfile do uruchomienia mssql:
-https://medium.com/@mohamedaitlahcen62/deployment-of-microsoft-sql-server-2017-with-docker-compose-a-step-by-step-guide-c083b31e1ed6
-
-odpalanie mssql z dockera:
-https://medium.com/@analyticscodeexplained/running-microsoft-sql-server-in-docker-a8dfdd246e45
-
